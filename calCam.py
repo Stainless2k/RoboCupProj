@@ -5,12 +5,12 @@ import pickle
 para = aruco.DetectorParameters_create()
 dic = aruco.Dictionary_get(aruco.DICT_5X5_1000)
 board = aruco.GridBoard_create(
-    markersX=5,
-    markersY=7,
+    markersX=4,
+    markersY=5,
     markerLength=0.04,
     markerSeparation=0.01,
     dictionary=dic)
-'''
+
 #write file
 jpg = board.draw((1000, 1000))
 cv2.imwrite("cal_board.jpg", jpg)
@@ -19,11 +19,10 @@ cv2.imwrite("cal_board.jpg", jpg)
 cv2.imshow('board', jpg)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
-'''
-cam = cv2.VideoCapture('cal.mp4')
 
+cam = cv2.VideoCapture('cal6.3gp')
+print("go")
 while(cam.isOpened()):
-
     ret, img = cam.read()
     if ret == True:
         #remove colors
@@ -31,7 +30,10 @@ while(cam.isOpened()):
 
         #find markers
         corners, ids, rejectedImgPoints = aruco.detectMarkers(gImg, dic, parameters=para)
-
+        img = aruco.drawDetectedMarkers(img, corners, borderColor=(0, 255, 0))
+        cv2.imshow('img', img)
+        if cv2.waitKey(0) & 0xFF == ord('q'):
+                break
         #markers were found
         if ids is not None and corners is not None and len(ids) > 0 and len(corners) > 0 and len(corners) == len(ids):
             #found all markers

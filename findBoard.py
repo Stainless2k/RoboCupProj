@@ -28,7 +28,7 @@ cv2.waitKey(0)
 cv2.destroyAllWindows()
 '''
 
-cam = cv2.VideoCapture('test.mp4')
+cam = cv2.VideoCapture('test6.3gp')
 
 while(cam.isOpened()):
 
@@ -53,9 +53,10 @@ while(cam.isOpened()):
         #draw markers
         img = aruco.drawDetectedMarkers(img, corners, borderColor=(0, 255, 0))
         pose, rvec, tvec = aruco.estimatePoseBoard(corners, ids, board, cameraMatrix, distCoeffs)
-        img = aruco.drawAxis(img, cameraMatrix, distCoeffs, rvec, tvec, 0.3)
+        if pose :
+            img = aruco.drawAxis(img, cameraMatrix, distCoeffs, rvec, tvec, 0.3)
         cv2.imshow('img', img)
-        
+
         #advance frames with anykey, close with q
         if cv2.waitKey(0) & 0xFF == ord('q'):
                 break
