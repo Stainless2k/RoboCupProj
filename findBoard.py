@@ -1,6 +1,7 @@
 import cv2
 import cv2.aruco as aruco
 import pickle
+import numpy as np
 
 #load cal
 p = open('cal.pckl', 'rb')
@@ -28,14 +29,19 @@ cv2.waitKey(0)
 cv2.destroyAllWindows()
 '''
 
-cam = cv2.VideoCapture('test6.3gp')
+cam = cv2.VideoCapture('../test12.3gp')
 
 while(cam.isOpened()):
 
     ret, img = cam.read()
     if ret == True:
+
+        h, w, _ = img.shape
         #remove colors
         gImg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+        img = cv2.line(img, (0, int(h/2)), (w, int(h/2)), (255, 0, 0))
+        img = cv2.line(img, (int(w/2), 0), (int(w/2), h), (255, 0, 0))
 
         #detect markers
         corners, ids, rejectedImgPoints = aruco.detectMarkers(gImg, dic, parameters = para)
@@ -54,13 +60,18 @@ while(cam.isOpened()):
         img = aruco.drawDetectedMarkers(img, corners, borderColor=(0, 255, 0))
         pose, rvec, tvec = aruco.estimatePoseBoard(corners, ids, board, cameraMatrix, distCoeffs)
         if pose :
+            # move axis to middle
+            #tvec[0] = tvec[0] - 0.1
+            #tvec[1] = tvec[1] - 0.1
             img = aruco.drawAxis(img, cameraMatrix, distCoeffs, rvec, tvec, 0.3)
+            print(tvec)
         cv2.imshow('img', img)
 
         #advance frames with anykey, close with q
         if cv2.waitKey(0) & 0xFF == ord('q'):
-                break
-
+                cam.release()
+    else:
+        cam.release()
 
 
 cv2.destroyAllWindows()
