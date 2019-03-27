@@ -4,7 +4,7 @@ import pickle
 import numpy as np
 
 #load cal
-p = open('cal.pckl', 'rb')
+p = open('calHandy.pckl', 'rb')
 cameraMatrix, distCoeffs = pickle.load(p)
 p.close()
 #Generate board
@@ -29,7 +29,7 @@ cv2.waitKey(0)
 cv2.destroyAllWindows()
 '''
 
-cam = cv2.VideoCapture('../test12.3gp')
+cam = cv2.VideoCapture('../test14.3gp')
 
 while(cam.isOpened()):
 
@@ -63,6 +63,12 @@ while(cam.isOpened()):
             # move axis to middle
             #tvec[0] = tvec[0] - 0.1
             #tvec[1] = tvec[1] - 0.1
+            if abs(tvec[0]) < 0.05:
+                print("stop")
+            elif tvec[0] < 0:
+                print("left")
+            elif tvec[0] > 0:
+                print("right")
             img = aruco.drawAxis(img, cameraMatrix, distCoeffs, rvec, tvec, 0.3)
             print(tvec)
         cv2.imshow('img', img)
