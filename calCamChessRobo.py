@@ -8,14 +8,14 @@ from naoqi import ALProxy
 roboIp = "10.0.7.14"
 PORT = 9559
 
-motionProxy = ALProxy("ALMotion", roboIp, PORT)
-	
-	# wake up
-motionProxy.wakeUp()
+#motionProxy = ALProxy("ALMotion", roboIp, PORT)
+
+# wake up
+#motionProxy.wakeUp()
 
 # import glob
-# visionProxy = ALProxy("ALVideoDevice",roboIp,PORT)
-visionProxy = ALProxy('RobocupVision', "10.0.7.14", 9559)
+visionProxy = ALProxy("ALVideoDevice",roboIp,PORT)
+#visionProxy = ALProxy('RobocupVision', "10.0.7.14", 9559)
 
 resolution = vision_definitions.kVGA
 colorSpace = vision_definitions.kYUVColorSpace
@@ -26,7 +26,7 @@ nameId = visionProxy.subscribe("python_GVM",resolution, colorSpace, fps)
 # termination criteria
 criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 # 2,5cm squarelen in m
-squarelen = 0.0025
+squarelen = 0.003
 chessheigth = 9
 chesslength = 6
 nFrame = 5
@@ -46,12 +46,12 @@ while(True):
     # frame = frame + 1
     # ret, img = cam.read()
     #only read every nth frame, there is probably a better way than this
-    # if ret == True and frame > nFrame: 
+    # if ret == True and frame > nFrame:
     # frame = 0
-	# img = visionProxy.getImageRemote(nameId)
-	data = visionProxy.getBGR24Image(0)
-	img = np.fromstring(data, dtype=np.uint8).reshape((480, 640, 3))
-	gray = cv2.cvtColor(cv2.UMat(img), cv2.COLOR_BGR2GRAY)
+	img = visionProxy.getImageRemote(nameId)
+	#data = visionProxy.getBGR24Image(0)
+	#img = np.fromstring(data, dtype=np.uint8).reshape((480, 640, 3))
+	gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     # find the chess board corners
 	ret, corners = cv2.findChessboardCorners(gray, (chessheigth ,chesslength), None)
     # if found, add object points, image points (after refining them)
@@ -104,6 +104,6 @@ p = open('calRobo.pckl', 'wb')
 pickle.dump((mtx, dist), p)
 p.close()
 
-motionProxy.rest()
+#motionProxy.rest()
 
 # cv2.destroyAllWindows()
