@@ -8,15 +8,15 @@ import math
 import time
 
 #load cal
-p = open('calRobo.pckl', 'rb')
+p = open('CalRobo.pckl', 'rb')
 cameraMatrix, distCoeffs = pickle.load(p)
 p.close()
 #Generate board
 para = aruco.DetectorParameters_create()
 dic = aruco.Dictionary_get(aruco.DICT_6X6_1000)
 board = aruco.GridBoard_create(
-	markersX=2,
-	markersY=2,
+	markersX=1,
+	markersY=1,
 	markerLength=0.09,
 	markerSeparation=0.01,
 	dictionary=dic)
@@ -30,17 +30,21 @@ fps = 1
 #proxys
 motionProxy = ALProxy("ALMotion",roboIP,port)
 visionProxy = ALProxy("ALVideoDevice",roboIP,port)
+postureProxy = ALProxy("ALRobotPosture",roboIP,port)
+visionProxy.setParameter(0, 22, 2)
 # subscribe camera
-nameId = visionProxy.subscribe("python_GVM",resolution, colorSpace, fps)
+nameId = visionProxy.subscribeCamera("python_GVM",1,resolution, colorSpace, fps)
 
 turnD = 10
 
 def main():
 	# wake up
 	motionProxy.setStiffnesses("Head", 1.0)
+	print("Standing up...")
 	motionProxy.wakeUp()
 	#motionProxy.setMoveArmsEnabled(True, True)
-	motionProxy.moveInit()
+	postureProxy.goToPosture("StandInit", 1.0)
+	print("Start search...")
 	search()
 	stopGoing()
 	# unsubscribe camera
@@ -48,7 +52,7 @@ def main():
 	# end
 	motionProxy.setStiffnesses("Head", 0.0)
 	motionProxy.rest()
-	print("exit")
+	print("Going to sleep...")
 
 def turnLeft():
 	x = 0.0
@@ -67,7 +71,7 @@ def turnRight():
 	motionProxy.moveTo(x,y,theta)
 
 def startGoing():
-	x = 0.2
+	x = 0.15
 	y = 0
 	theta = 0
 	freq = 0.1
@@ -84,7 +88,7 @@ def lookDown():
 
 def lookUp():
 	names = "HeadPitch"
-	angels = 0.0
+	angels = np.deg2rad(-10)
 	times = 1.0
 	isAbsolute = True
 	motionProxy.angleInterpolation(names,angels,times,isAbsolute)
@@ -98,11 +102,17 @@ def startModul(modul):
 def look():
 	# get image
 	#cv2.waitKey(2000)
-	print("pic1")
+	print("Start loading the image...")
 	img = visionProxy.getImageRemote(nameId)
+	visionProxy.releaseImage(nameId)
+	if img == None :
+		print("Error: No Image received...")
+		visionProxy.unsubscribe(nameId)
+		motionProxy.rest()
+		exit()
 	# get the binary values of the image
 	img = np.fromstring(img[6], dtype=np.uint8).reshape((480, 640, 3))
-	print("pi2")
+	print("Image loaded and converted...")
 	# detect chessboard --------------------------------
 	h, w, _ = img.shape
 	#remove colors
@@ -124,10 +134,12 @@ def look():
 	#draw markers
 	img = aruco.drawDetectedMarkers(img, corners, borderColor=(0, 255, 0))
 	pose, rvec, tvec = aruco.estimatePoseBoard(corners, ids, board, cameraMatrix, distCoeffs)
-
+ 
 	if pose:
+		#tvec[0] = tvec[0] - 0.03
+		#tvec[1] = tvec[1] - 0.03
 		img = aruco.drawAxis(img, cameraMatrix, distCoeffs, rvec, tvec, 0.3)
-		print(tvec)
+		#print(tvec)
 		if abs(tvec[0]) < 0.05:
 			ret = "ahead"
 		elif tvec[0] < 0:
@@ -145,14 +157,17 @@ def search():
 
 	i = 0
 	isLookDown = False
+	lookUp()
 	#find marker and positon robo staright
-	while i < 100:
+	#should find the picture in 24 steps...24*15 = 360 ...
+	while i < 25:
 		i= i+1
-		print(i)
+		print "Searching the Picture: " , i
 		dir = look()
-		print(dir)
+		print("Picture is " + dir)
 		if dir == "ahead":
 			#marker is ahead
+			startGoing()
 			break
 
 		elif dir == "left":
@@ -177,25 +192,38 @@ def search():
 			stopGoing()
 			break
 
-	print("phase 2")
+	print("Found the Picture ....Going for it...")
 	i = 0
-	while i < 10:
+	while i < 15:
 		i= i+1
-		print(i)
+		print "Trying to walk to the Picture: " , i
 		dir = look()
+		print("Picture is " + dir)
 		if dir == "notFound" and isLookDown == False:
 			lookDown()
 			isLookDown = True
 		elif dir == "notFound" and isLookDown == True:
-			print("maker lost")
-			startGoing()
+			print("Lost the Picture again. Am I standing on it?")
+			#startGoing()
 			break
-		else:
+		elif dir == "ahead":
 			startGoing()
+		elif dir == "right":
+			turnRight()
+		elif dir == "left":
+			turnLeft()
+		else:
+			print("Something odd just happened...")
 
 		if cv2.waitKey(3000) & 0xFF == ord('q'):
 			stopGoing()
 			break
+	print "making sure im on it"
+	dir = look()
+	if dir !=  "notFound":
+		print "Im not standing on it"
+		search()
+	print "I am surely standing on the picture now..."
 
 
 '''

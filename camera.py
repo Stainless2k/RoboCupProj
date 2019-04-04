@@ -5,12 +5,25 @@ import cv2
 import vision_definitions
 import pickle
 
+
+
+	
+	
 def main():
 	testing = False
 
 	# Nao connection data
 	roboIP = '10.0.7.14'
 	port = 9559
+	
+	motionProxy = ALProxy("ALMotion",roboIP,port)
+	names = "HeadPitch"
+	angels = np.deg2rad(-10)
+	times = 1.0
+	isAbsolute = True
+	motionProxy.setStiffnesses("Head", 1.0)
+	motionProxy.angleInterpolation(names,angels,times,isAbsolute)
+	motionProxy.setStiffnesses("Head", 0.0)
 
 	squarelen = 0.003
 	chessheigth = 9
@@ -41,7 +54,7 @@ def main():
 	fps = 1
 
 	# Subscribe camera
-	nameId = visionProxy.subscribe("python_GVM",resolution, colorSpace, fps)
+	nameId = visionProxy.subscribeCamera("python_GVM",1,resolution, colorSpace, fps)
 
 
 	# Get image
@@ -87,7 +100,7 @@ def main():
 		print("out")
 		ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, gray.shape[::-1], None, None)
 		print(mtx)
-		p = open('calRobo.pckl', 'wb')
+		p = open('test.pckl', 'wb')
 		pickle.dump((mtx, dist), p)
 		p.close()
 
