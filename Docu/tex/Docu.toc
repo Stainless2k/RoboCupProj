@@ -1,0 +1,7 @@
+\babel@toc {english}{}
+\contentsline {section}{\numberline {1}Goal}{1}
+\contentsline {section}{\numberline {2}Approach}{1}
+\contentsline {section}{\numberline {3}Code Architecture}{1}
+\contentsline {section}{\numberline {4}What we learned about the Nao}{2}
+\contentsline {section}{\numberline {5}Outcome}{2}
+\contentsline {section}{\numberline {6}Ways to improve}{3}
