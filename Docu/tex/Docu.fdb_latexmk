@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1554656336 "Docu.tex" "Docu.pdf" "Docu" 1554656336
+["pdflatex"] 1554656927 "Docu.tex" "Docu.pdf" "Docu" 1554656928
   "C:/Program Files/MiKTeX 2.9/fonts/tfm/public/cm/cmbx10.tfm" 1136768653 1328 c834bbb027764024c09d3d2bf908b5f0 ""
   "C:/Program Files/MiKTeX 2.9/fonts/tfm/public/cm/cmbx12.tfm" 1136768653 1324 c910af8c371558dc20f2d7822f66fe64 ""
   "C:/Program Files/MiKTeX 2.9/fonts/tfm/public/cm/cmmi12.tfm" 1136768653 1524 4414a8315f39513458b80dfc63bff03a ""
@@ -17,6 +17,7 @@
   "C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1247596667 35752 024fb6c41858982481f6968b5fc26508 ""
   "C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb" 1247596667 32722 d7379af29a190c3f453aba36302ff5a9 ""
   "C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb" 1247596666 32362 bc3f3eec7ab7d65fe700963d4017d32c ""
+  "C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb" 1247596666 32716 08e384dc442464e7285e891af9f45947 ""
   "C:/Program Files/MiKTeX 2.9/tex/generic/babel/babel.def" 1539794508 73595 91912625d7236abf8c64d0d8a63ef052 ""
   "C:/Program Files/MiKTeX 2.9/tex/generic/babel/babel.sty" 1539794508 16027 9e4c267fc8de8cd565959075c998c228 ""
   "C:/Program Files/MiKTeX 2.9/tex/generic/babel/switch.def" 1539794508 13309 ef1118e5a12936b0f70ad148eefaf339 ""
@@ -26,13 +27,14 @@
   "C:/Program Files/MiKTeX 2.9/tex/latex/base/article.cls" 1527456798 19823 fcbc01552b07b608574cbf8e1977e0c0 ""
   "C:/Program Files/MiKTeX 2.9/tex/latex/base/inputenc.sty" 1527456814 5052 f2525dfd6e503dc383e90b568c6c9f02 ""
   "C:/Program Files/MiKTeX 2.9/tex/latex/base/size10.clo" 1527456798 8294 b0f177401f895563eb19304d2389582d ""
+  "C:/Program Files/MiKTeX 2.9/tex/latex/was/gensymb.sty" 1081504700 4755 29d19942d7123701aa6a3876b9ba11b1 ""
   "C:/Users/Leon/AppData/Local/MiKTeX/2.9/miktex/data/le/pdftex/pdflatex.fmt" 1540831996 4153039 8cedb4acc9c780a6a0741a4b74dd541f ""
   "C:/Users/Leon/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map" 1540831955 80423 3cfba73105275d3ad410701d89fbdf7a ""
-  "Docu.aux" 1554656336 490 760f0fb1f50a226d9be9a81729a5418f ""
-  "Docu.tex" 1554656335 5785 2fc62b1048d5e9ebe2b1b394e593f040 ""
-  "Docu.toc" 1554656336 374 b353bca72f3df7abb2ffa160d3e268f0 ""
+  "Docu.aux" 1554656928 490 760f0fb1f50a226d9be9a81729a5418f ""
+  "Docu.tex" 1554656927 5813 cc2eb3631bd090f90e13f49ea1593ee3 ""
+  "Docu.toc" 1554656928 374 b353bca72f3df7abb2ffa160d3e268f0 ""
   (generated)
-  "Docu.toc"
   "Docu.aux"
+  "Docu.toc"
   "Docu.log"
   "Docu.pdf"
